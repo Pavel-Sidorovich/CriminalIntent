@@ -5,6 +5,6 @@ import com.pavesid.criminalintent.abstractContr.SingleFragmentActivity
 
 class CrimeListActivity: SingleFragmentActivity() {
     override fun createFragment(): Fragment {
-        return CrimeFragment()
+        return CrimeListFragment()
     }
 }

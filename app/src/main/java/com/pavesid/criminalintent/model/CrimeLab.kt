@@ -1,8 +1,6 @@
-package com.pavesid.criminalintent.controllers
+package com.pavesid.criminalintent.model
 
 import android.content.Context
-import android.util.Log
-import com.pavesid.criminalintent.model.Crime
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -12,14 +10,14 @@ class CrimeLab private constructor(context: Context?) {
         private var crimeLab: CrimeLab? = null
         operator fun get(context: Context?): CrimeLab {
             if (crimeLab == null) {
-                crimeLab = CrimeLab(context)
+                crimeLab =
+                    CrimeLab(context)
             }
             return crimeLab!!
         }
     }
 
     private var crimes: ArrayList<Crime> = ArrayList()
-
 
     init {
         for (i in 0..100) {
@@ -36,11 +34,8 @@ class CrimeLab private constructor(context: Context?) {
     }
 
     fun getCrime(id: UUID): Crime? {
-        var i = 0
         for (crime in crimes) {
-            i++
             if (crime.getId() == id) {
-                Log.d("M_CrimeLab", "$i")
                 return crime
             }
         }

@@ -74,6 +74,7 @@
 package com.pavesid.criminalintent.controllers
 
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -84,6 +85,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.pavesid.criminalintent.R
 import com.pavesid.criminalintent.model.Crime
+import com.pavesid.criminalintent.model.CrimeLab
 
 
 class CrimeListFragment : Fragment() {
@@ -93,7 +95,7 @@ class CrimeListFragment : Fragment() {
     companion object {
         private const val NOT_POLICE = 0
         private const val POLICE = 1
-        private var mX = 0
+//        private var mX = 0
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -106,17 +108,17 @@ class CrimeListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        updateUI(mX)
+        updateUI()
     }
 
-    private fun updateUI(position: Int = -1) {
+    private fun updateUI() {
         val crimeLab = CrimeLab[activity!!]
         val crimes = crimeLab.getCrimes()
         if(adapter == null) {
             adapter = CrimeAdapter(crimes)
             crimeRecyclerView.adapter = adapter
         } else {
-            adapter!!.notifyItemChanged(position)
+            adapter!!.notifyDataSetChanged()
         }
     }
 
@@ -128,8 +130,9 @@ class CrimeListFragment : Fragment() {
         init {
             itemView.setOnClickListener {
 //                val intent = Intent(parent.context, CrimeActivity::class.java)
-                val intent = CrimeActivity.newIntent(parent.context, crime.getId())
-                mX = adapterPosition
+//                val intent = CrimeActivity.newIntent(parent.context, crime.getId())
+                val intent = CrimePagerActivity.newIntent(parent.context, crime.getId())
+//                mX = adapterPosition
                 parent.context.startActivity(intent)
             }
         }
@@ -141,7 +144,7 @@ class CrimeListFragment : Fragment() {
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = crime.getTitle()
-            dateTextView.text = crime.getDate()
+            dateTextView.text = DateFormat.format("EEEE, MMM dd, yyyy", crime.getDate()).toString()
             solvedImageView.visibility = if(crime.isSolved()) {
                 View.VISIBLE
             } else {

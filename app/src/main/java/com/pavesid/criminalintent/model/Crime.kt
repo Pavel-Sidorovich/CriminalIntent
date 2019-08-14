@@ -6,13 +6,14 @@ import java.util.*
 class Crime {
     private val id: UUID = UUID.randomUUID()
     private lateinit var title: String
-    private var date: String
+    private var date: Date = Date()
+    private var time: Date = Date()
     private var solved = false
     private var requiresPolice = false
 
     init{
-        val dateMillisecond = Calendar.getInstance().time
-        date = DateFormat.format("hh:mm:ss, EEEE, MMM dd, yyyy", dateMillisecond).toString()
+//        val dateMillisecond = Calendar.getInstance().time
+//        date = DateFormat.format("hh:mm:ss, EEEE, MMM dd, yyyy", dateMillisecond)
     }
 
     fun getId(): UUID {
@@ -27,12 +28,20 @@ class Crime {
         this.title = title
     }
 
-    fun getDate(): String {
+    fun getDate(): Date {
         return date
     }
 
-    fun setDate(date: String) {
+    fun setDate(date: Date) {
         this.date = date
+    }
+
+    fun getTime(): Date {
+        return time
+    }
+
+    fun setTime(time: Date) {
+        this.time = time
     }
 
     fun isSolved(): Boolean {

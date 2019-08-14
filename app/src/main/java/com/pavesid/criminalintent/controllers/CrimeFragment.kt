@@ -1,26 +1,32 @@
 package com.pavesid.criminalintent.controllers
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import androidx.fragment.app.Fragment //TODO замена на v4
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
 import com.pavesid.criminalintent.R
 import com.pavesid.criminalintent.model.Crime
+import com.pavesid.criminalintent.model.CrimeLab
 import java.util.*
 
 class CrimeFragment : Fragment() {
     companion object{
         private const val ARG_CRIME_ID = "crime_id"
+        private const val DIALOG_DATE = "dialog_date"
+        private const val DIALOG_TIME = "dialog_time"
+        private const val REQUEST_DATE = 0
+        private const val REQUEST_TIME = 1
 
-        fun newInstante(crimeID: UUID): CrimeFragment{
+        fun newInstance(crimeID: UUID): CrimeFragment{
             val args = Bundle()
             args.putSerializable(ARG_CRIME_ID, crimeID)
 
@@ -30,9 +36,10 @@ class CrimeFragment : Fragment() {
         }
     }
     var crime: Crime? = null
-    lateinit var dateButton: Button
-    lateinit var solvedCheckBox: CheckBox
-    lateinit var titleField: EditText
+    private lateinit var dateButton: Button
+    private lateinit var timeButton: Button
+    private lateinit var solvedCheckBox: CheckBox
+    private lateinit var titleField: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,13 +71,54 @@ class CrimeFragment : Fragment() {
         })
 
         dateButton = v.findViewById(R.id.btn_crime_date)
-        dateButton.text = crime?.getDate()
-        dateButton.isEnabled = false
+        updateDate()
+        dateButton.setOnClickListener {
+            val fm = fragmentManager
+            val dialog = DatePickerFragment.newInstance(crime?.getDate())
+
+            dialog.setTargetFragment(this@CrimeFragment, REQUEST_DATE)
+            dialog.show(fm, DIALOG_DATE)
+        }
+
+        timeButton = v.findViewById(R.id.btn_crime_time)
+        updateTime()
+        timeButton.setOnClickListener {
+            val fm = fragmentManager
+            val dialog = TimePickerFragment.newInstance(crime?.getTime())
+
+            dialog.setTargetFragment(this@CrimeFragment, REQUEST_TIME)
+            dialog.show(fm, DIALOG_TIME)
+        }
 
         solvedCheckBox = v.findViewById(R.id.checkbox_crime_solved)
         solvedCheckBox.isChecked = crime?.isSolved() ?: false
         solvedCheckBox.setOnCheckedChangeListener { _, isChecked -> crime?.setSolved(isChecked) }
 
         return v
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode != Activity.RESULT_OK){
+            return
+        }
+        if(requestCode == REQUEST_DATE){
+            val date = data?.getSerializableExtra(DatePickerFragment.EXTRA_DATE) as Date
+            crime?.setDate(date)
+            updateDate()
+        }
+        if(requestCode == REQUEST_TIME){
+            val time = data?.getSerializableExtra(TimePickerFragment.EXTRA_TIME) as Date
+
+            crime?.setTime(time)
+            updateTime()
+        }
+    }
+
+    private fun updateDate() {
+        dateButton.text = DateFormat.format("EEEE, MMM dd, yyyy", crime?.getDate()).toString()
+    }
+
+    private fun updateTime() {
+        timeButton.text = DateFormat.format("hh:mm", crime?.getTime()).toString()
     }
 }

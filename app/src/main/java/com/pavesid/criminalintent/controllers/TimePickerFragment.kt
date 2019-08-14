@@ -50,7 +50,6 @@ class TimePickerFragment : DialogFragment() {
 
         timePicker.setOnTimeChangedListener(object : TimePicker.OnTimeChangedListener{
             override fun onTimeChanged(p0: TimePicker?, p1: Int, p2: Int) {
-//                timeNow = GregorianCalendar(0, 0, 0, p1, p2).time
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     timePicker.hour = p1
                     timePicker.minute = p2
@@ -64,10 +63,9 @@ class TimePickerFragment : DialogFragment() {
 
         return AlertDialog.Builder(context!!)
             .setView(v)
-            .setTitle(R.string.date_picker_title)
+            .setTitle(R.string.time_picker_title)
             .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
                 override fun onClick(p0: DialogInterface?, p1: Int) {
-//                    sendResult(Activity.RESULT_OK, timeNow)
                     val cal = Calendar.getInstance()
                     val date = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         cal.set(0, 0, 0, timePicker.hour, timePicker.minute)

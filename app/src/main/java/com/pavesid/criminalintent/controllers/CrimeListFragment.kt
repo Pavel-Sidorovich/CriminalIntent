@@ -139,12 +139,14 @@ class CrimeListFragment : Fragment() {
 
         private var titleTextView: TextView = itemView.findViewById(R.id.crime_title)
         private var dateTextView: TextView = itemView.findViewById(R.id.crime_date)
+        private var timeTextView: TextView = itemView.findViewById(R.id.crime_time)
         private var solvedImageView: ImageView = itemView.findViewById(R.id.crime_solved)
 
         fun bind(crime: Crime) {
             this.crime = crime
             titleTextView.text = crime.getTitle()
             dateTextView.text = DateFormat.format("EEEE, MMM dd, yyyy", crime.getDate()).toString()
+            timeTextView.text = DateFormat.format("hh:mm", crime.getTime()).toString()
             solvedImageView.visibility = if(crime.isSolved()) {
                 View.VISIBLE
             } else {

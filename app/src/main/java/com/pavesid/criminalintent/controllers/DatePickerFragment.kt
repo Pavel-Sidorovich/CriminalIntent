@@ -45,20 +45,18 @@ class DatePickerFragment: DialogFragment() {
         return AlertDialog.Builder(context!!)
             .setView(v)
             .setTitle(R.string.date_picker_title)
-            .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener{
-                override fun onClick(p0: DialogInterface?, p1: Int) {
-                    val year = datePicker.year
-                    val month = datePicker.month
-                    val day = datePicker.dayOfMonth
-                    val date = GregorianCalendar(year, month, day)
-                        .time
-                    sendResult(Activity.RESULT_OK, date)
-                }
-            })
+            .setPositiveButton(android.R.string.ok) { p0, p1 ->
+                val year = datePicker.year
+                val month = datePicker.month
+                val day = datePicker.dayOfMonth
+                val date = GregorianCalendar(year, month, day)
+                    .time
+                sendResult(Activity.RESULT_OK, date)
+            }
             .create()
     }
 
-    fun sendResult(resultCode: Int, date: Date){
+    private fun sendResult(resultCode: Int, date: Date){
         if(targetFragment == null){
             return
         }

@@ -1,12 +1,13 @@
 package com.pavesid.criminalintent.model
 
 import android.text.format.DateFormat
+import java.time.ZoneId
 import java.util.*
 
 class Crime {
     private val id: UUID = UUID.randomUUID()
-    private lateinit var title: String
-    private var date: Date = Date()
+    private var title: String = ""
+    private var date: Date = Date()//GregorianCalendar.getInstance(TimeZone.getTimeZone("Europe/Moscow")).time
     private var time: Date = Date()
     private var solved = false
     private var requiresPolice = false

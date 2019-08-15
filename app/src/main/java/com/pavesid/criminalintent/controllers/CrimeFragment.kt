@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.pavesid.criminalintent.R
 import com.pavesid.criminalintent.model.Crime
@@ -38,6 +39,7 @@ class CrimeFragment : Fragment() {
     var crime: Crime? = null
     private lateinit var dateButton: Button
     private lateinit var timeButton: Button
+    private lateinit var removeButton: ImageView
     private lateinit var solvedCheckBox: CheckBox
     private lateinit var titleField: EditText
 
@@ -69,6 +71,12 @@ class CrimeFragment : Fragment() {
                 crime?.setTitle(p0.toString())
             }
         })
+
+        removeButton = v.findViewById(R.id.remove_crime)
+        removeButton.setOnClickListener {
+            CrimeLab[context].removeCrime(crime)
+            activity?.finish()
+        }
 
         dateButton = v.findViewById(R.id.btn_crime_date)
         updateDate()

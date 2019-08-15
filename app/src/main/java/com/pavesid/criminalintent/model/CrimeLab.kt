@@ -10,8 +10,7 @@ class CrimeLab private constructor(context: Context?) {
         private var crimeLab: CrimeLab? = null
         operator fun get(context: Context?): CrimeLab {
             if (crimeLab == null) {
-                crimeLab =
-                    CrimeLab(context)
+                crimeLab = CrimeLab(context)
             }
             return crimeLab!!
         }
@@ -20,13 +19,17 @@ class CrimeLab private constructor(context: Context?) {
     private var crimes: ArrayList<Crime> = ArrayList()
 
     init {
-        for (i in 0..100) {
-            val crime = Crime()
-            crime.setTitle("Crime № $i")
-            crime.setSolved(i % 2 == 0)
-            crime.setRequiresPolice(i % 2 == 1)
-            crimes.add(crime)
-        }
+        val crime = Crime()
+        crime.setTitle("Example crime")
+        crimes.add(crime)
+    }
+
+    fun addCrime(c: Crime) {
+        crimes.add(c)
+    }
+
+    fun removeCrime(c: Crime?) {
+        crimes.remove(c)
     }
 
     fun getCrimes(): List<Crime> {
